@@ -7,6 +7,10 @@ on:
             - feature/*
     pull_request:
     workflow_dispatch:
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+    AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
 jobs:
   terraform:
@@ -37,6 +41,7 @@ jobs:
 
       - name: Terraform Plan
         run: cd ./terraform/nginx-ec2/1_ec2 && ls ../ && terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+
 
       - name: Terraform Apply
         run: cd ./terraform/nginx-ec2/1_ec2 && terraform apply "create.plan" -auto-approve
