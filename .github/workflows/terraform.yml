@@ -53,5 +53,5 @@ jobs:
       - name: Terraform Apply
         run: |
           cd ./terraform/nginx-ec2/1_ec2 
-          terraform apply "create.plan" -auto-approve
+          terraform apply -auto-approve "create.plan" 
           
