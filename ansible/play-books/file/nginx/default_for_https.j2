@@ -1,0 +1,31 @@
+server {
+    listen [::]:443 ssl;
+    listen 443 ssl;
+
+    server_name nginx-api.pp.ua;
+
+    ssl_certificate /etc/letsencrypt/live/nginx-api.pp.ua/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/nginx-api.pp.ua/privkey.pem;
+    # include /etc/letsencrypt/options-ssl-nginx.conf;
+    # ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    root /var/www/html/dog-facts;
+
+    index index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /page {
+        alias /var/www/html/dog-facts/index.html;
+        default_type text/html;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name nginx-api.pp.ua;
+    return 301 https://$host$request_uri;
+}

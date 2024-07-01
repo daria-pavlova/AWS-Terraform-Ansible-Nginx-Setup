@@ -1,0 +1,27 @@
+---
+- name: Install nginx
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks: 
+  - name: Update apt cache
+    command: apt-get update
+    tags: update
+  # - name: Install nginx with apt
+  #   apt:
+  #     name: nginx=1.18.0-0ubuntu1.4
+  #     state: present
+  #     tags: nginx
+  - name: Install nginx with command
+    command: apt-get install nginx=1.18.0-0ubuntu1.4 -y
+    tags: nginx
+  - name: Install certbot
+    apt:
+      name:
+      - certbot=0.40.0-1ubuntu0.1
+      - python3-certbot-nginx=0.40.0-1ubuntu0.1
+      state: present
+      tags: certbot
+  - name: Install certbot with command
+    command: apt install -y certbot python3-certbot-nginx
+    tags: certbot
