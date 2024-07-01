@@ -13,7 +13,7 @@ terraform {
   
 }
 provider "aws" {
-  profile = "terraform-infra-user"
+  profile = "default"
   region  = var.region
 
   default_tags {
