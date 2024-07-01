@@ -33,12 +33,12 @@ jobs:
         run: cd ./terraform/nginx-ec2/1_ec2
 
       - name: Terraform Init
-        run: ls && terraform init
+        run: cd ./terraform/nginx-ec2/1_ec2 && terraform init
 
       - name: Terraform Plan
-        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+        run: cd ./terraform/nginx-ec2/1_ec2 && terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
 
       - name: Terraform Apply
-        run: terraform apply "create.plan" -auto-approve
+        run: cd ./terraform/nginx-ec2/1_ec2 && terraform apply "create.plan" -auto-approve
         env:
           TF_VAR_profile: terraform-infra-user
