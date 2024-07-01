@@ -28,15 +28,12 @@ jobs:
           aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
-            
-      - name: ec2 dev
-        run: ls
         
       - name: ec2 dev
         run: cd ./terraform/nginx-ec2/1_ec2
 
       - name: Terraform Init
-        run: terraform init
+        run: ls && terraform init
 
       - name: Terraform Plan
         run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
