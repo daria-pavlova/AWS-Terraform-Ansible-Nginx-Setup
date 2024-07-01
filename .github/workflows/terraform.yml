@@ -30,7 +30,7 @@ jobs:
           aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
             
       - name: ec2 dev
-        run: cd ${{ github.repository }} && ls
+        run: ls
         
       - name: ec2 dev
         run: cd ${{ github.repository }}/terraform/nginx-ec2/1_ec2
