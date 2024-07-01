@@ -41,6 +41,7 @@ jobs:
 
       - name: Save SSH key to file
         run: |
+          mkdir ~/.ssh
           echo "${{ secrets.TERRAFORM_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
