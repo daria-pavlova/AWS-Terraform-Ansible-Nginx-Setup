@@ -39,6 +39,11 @@ jobs:
           cd ./terraform/nginx-ec2/1_ec2
           terraform init
 
+      - name: Save SSH key to file
+        run: |
+          echo "${{ secrets.TERRAFORM_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Terraform Plan
         run: |
           cd ./terraform/nginx-ec2/1_ec2
