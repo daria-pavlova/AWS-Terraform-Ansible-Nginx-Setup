@@ -33,7 +33,7 @@ jobs:
         run: ls
         
       - name: ec2 dev
-        run: cd ${{ github.repository }}/terraform/nginx-ec2/1_ec2
+        run: cd ./terraform/nginx-ec2/1_ec2
 
       - name: Terraform Init
         run: terraform init
