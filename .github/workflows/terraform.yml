@@ -17,6 +17,9 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, dev-manual]
 
     steps:
       - name: Checkout code
@@ -38,6 +41,7 @@ jobs:
         run: |
           cd ./terraform/nginx-ec2/1_ec2
           terraform init
+
 
       - name: Save SSH key to file
         run: |

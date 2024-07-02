@@ -16,7 +16,10 @@ server {
                 try_files $uri $uri/ =404;
         }
 
-        location /page {
-                alias /var/www/html/dog-facts/index.html;
+        location /page/ {
+                alias /var/www/html/dog-facts/;
+                try_files $uri $uri/ =404;
+                index index.html index.htm;
+                default_type text/html;
         }
 }

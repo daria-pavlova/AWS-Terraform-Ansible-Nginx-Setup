@@ -34,11 +34,10 @@ if prompt "Update nginx-http configuration"; then
         --tags "nginx-http"
 fi
 
-
-if prompt "Configure https certificate"; then
+if prompt "Reload nginx"; then
     ansible-playbook -i "$INVENTORY_FILE" \
         "$this/../play-books/2_update_nginx_conf.yaml" \
-        --tags "certbot-create"
+        --tags "nginx-restart"
 fi
 
 if prompt "Update nginx-https configuration"; then
@@ -47,7 +46,7 @@ if prompt "Update nginx-https configuration"; then
         --tags "nginx-https"
 fi
 
-if prompt "Restart nginx"; then
+if prompt "Reload nginx"; then
     ansible-playbook -i "$INVENTORY_FILE" \
         "$this/../play-books/2_update_nginx_conf.yaml" \
         --tags "nginx-restart"

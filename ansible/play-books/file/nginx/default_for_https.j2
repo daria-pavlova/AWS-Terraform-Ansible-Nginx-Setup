@@ -17,8 +17,20 @@ server {
         try_files $uri $uri/ =404;
     }
 
+    # /static/ location block
+    location /static/ {
+        alias /var/www/html/dog-facts/;
+        try_files $uri $uri/ =404;
+        index index.html index.htm;
+        default_type text/html;
+        add_header Content-Type text/html;
+    }
+
+    # /page/ location block
     location /page {
-        alias /var/www/html/dog-facts/index.html;
+        alias /var/www/html/dog-facts/;
+        try_files $uri $uri/ =404;
+        index index.html index.htm;
         default_type text/html;
     }
 }

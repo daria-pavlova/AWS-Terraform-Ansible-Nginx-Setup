@@ -40,22 +40,8 @@ if prompt "Install certbot"; then
         --tags "certbot"
 fi
 
-
-if prompt "Copy site"; then
+if prompt "Configure SSL certificate"; then
     ansible-playbook -i "$INVENTORY_FILE" \
-        "$this/../play-books/1_install_nginx_certbot.yml" \
-        --tags "oversecured"
+        "$this/../play-books/2_update_nginx_conf.yaml" \
+        --tags "certbot-create"
 fi
-
-if prompt "Update nginx-http configuration"; then
-    ansible-playbook -i "$INVENTORY_FILE" \
-        "$this/../play-books/1_install_nginx_certbot.yml" \
-        --tags "nginx-http"
-fi
-
-if prompt "Restart nginx"; then
-    ansible-playbook -i "$INVENTORY_FILE" \
-        "$this/../play-books/1_install_nginx_certbot.yml" \
-        --tags "nginx-restart"
-fi
-
