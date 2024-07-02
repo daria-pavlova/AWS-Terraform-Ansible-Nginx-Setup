@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: terraform-plan
-          path: plan.txt
+          path: ./terraform/nginx-ec2/1_ec2/plan.txt
 
       # - name: Comment PR with Terraform Plan
       #   uses: some/terraform-plan-comment-action@v1
