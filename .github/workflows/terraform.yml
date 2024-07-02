@@ -1,7 +1,11 @@
 name: 'Terraform'
 
 on:
-    workflow_dispatch:
+    push:
+        branches:
+            - main
+            - feature/*
+
 env:
     AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
@@ -47,6 +51,7 @@ jobs:
           terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
 
       - name: Terraform Apply
+        if: github.event_name == 'workflow_dispatch'
         run: |
           cd ./terraform/nginx-ec2/1_ec2 
           terraform apply -auto-approve "create.plan" 
