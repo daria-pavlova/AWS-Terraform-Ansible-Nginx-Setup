@@ -36,7 +36,7 @@ jobs:
       - name: Terraform Init
         run: |
           cd ./terraform/nginx-ec2/1_ec2
-          terraform init /terraform/nginx-ec2/1_ec2
+          terraform init
 
 
       - name: Save SSH key to file
