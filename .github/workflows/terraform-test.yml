@@ -17,6 +17,9 @@ on:
         options:
         - Terraform_apply
         - Terraform_destroy
+  push:
+    branches:
+        - 'feature/setup-infrastructure'
 
 jobs:
   terraform_apply:
