@@ -115,10 +115,6 @@ data "aws_route53_zone" "hosted_zone" {
   name = var.hosted_zone
 }
 
-output "hosted_zone_id" {
-  value = data.aws_route53_zone.hosted_zone.zone_id
-}
-
 resource "aws_route53_record" "a_record" {
   zone_id = data.aws_route53_zone.hosted_zone.zone_id
   name    = var.hosted_zone
