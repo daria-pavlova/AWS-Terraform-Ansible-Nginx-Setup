@@ -93,7 +93,15 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+        run: |
+            terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+            terraform show -no-color tfplan > plan.txt
+
+      - name: Upload Terraform Plan as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan
+          path: plan.txt
   
 
   terraform_destroy:
