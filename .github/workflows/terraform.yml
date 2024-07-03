@@ -1,0 +1,59 @@
+name: 'Terraform'
+
+on:
+    push:
+        branches:
+            - main
+            - feature/*
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.9.0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
+      - name: Terraform Init
+        run: |
+          cd ./terraform/dev/1_ec2
+          terraform init
+
+
+      - name: Save SSH key to file
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+          
+      # - name: Terraform Plan
+      #   run: |
+      #     cd ./terraform/dev/1_ec2
+      #     terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+      #     terraform show -no-color tfplan > plan.txt
+      #   continue-on-error: true
+
+      # - name: Upload Terraform Plan as Artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: terraform-plan
+      #     path: ./terraform/dev/1_ec2/plan.txt
+
+      # - name: Terraform Apply
+      #   run: |
+      #     cd ./terraform/dev/1_ec2 
+      #     terraform apply -auto-approve "create.plan" 
+          

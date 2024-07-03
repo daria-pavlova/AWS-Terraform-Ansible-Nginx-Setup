@@ -1,0 +1,30 @@
+---
+- name: Install nginx
+  hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Copy site
+    copy:
+      src: "{{ playbook_dir }}/file/nginx/dog-facts"
+      dest: "/var/www/html/"
+    tags: dog-facts
+  - name: Update nginx http configuration
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/file/nginx/default.j2"
+      dest: "/etc/nginx/sites-enabled/default"
+    tags: nginx-http
+  - name: Update nginx https configuration
+    ansible.builtin.template:
+      src: "{{ playbook_dir }}/file/nginx/default_for_https.j2"
+      dest: "/etc/nginx/sites-enabled/default_for_https"
+    tags: nginx-https
+  - name: Reload nginx
+    service:
+      name: nginx
+      state: reloaded
+    tags: nginx-restart
+  - name: Create a certificate
+    command: certbot --nginx --agree-tos -d 'nginx-api.pp.ua' --register-unsafely-without-email --non-interactive
+    tags: certbot-create
+
