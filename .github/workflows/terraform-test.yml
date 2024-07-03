@@ -10,11 +10,13 @@ on:
         options:
         - ./terraform/dev/1_ec2
         - ./terraform/dev/0_route53
+        - ./terraform/dev/0_terraform_user
       # Terraform action you want to perform
       action:
         description: 'Terraform Action to Perform'
         type: choice
         options:
+        - Terraform_plan
         - Terraform_apply
         - Terraform_destroy
 
@@ -60,6 +62,39 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve "create.plan" 
+        
+  terraform_plan:
+    name: "Terraform_apply"
+    if: ${{ github.event.inputs.action == 'Terraform_apply' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.resource }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Save SSH key to file
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+  
 
   terraform_destroy:
     name: "Terraform_destroy"
