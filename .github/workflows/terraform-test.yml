@@ -17,9 +17,12 @@ on:
         options:
         - Terraform_apply
         - Terraform_destroy
-  push:
-    branches:
-        - 'feature/setup-infrastructure'
+
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+    AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
 
 jobs:
   terraform_apply:
