@@ -64,7 +64,7 @@ jobs:
         run: terraform apply -auto-approve "create.plan" 
         
   terraform_plan:
-    name: "Terraform_apply"
+    name: "Terraform_plan"
     if: ${{ github.event.inputs.action == 'Terraform_apply' }}
     runs-on: ubuntu-latest
     defaults:
