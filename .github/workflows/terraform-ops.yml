@@ -10,16 +10,21 @@ on:
         options:
         - ./terraform/dev/1_ec2
         - ./terraform/dev/0_route53
+        - ./terraform/dev/0_terraform_user
       # Terraform action you want to perform
       action:
         description: 'Terraform Action to Perform'
         type: choice
         options:
+        - Terraform_plan
         - Terraform_apply
         - Terraform_destroy
-  push:
-    branches:
-        - 'feature/setup-infrastructure'
+
+env:
+    AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+    AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+    AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
 
 jobs:
   terraform_apply:
@@ -36,13 +41,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Save SSH key to file
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+
       - name: Terraform Init
         id: init
         run: terraform init
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
       
       - name: Terraform Validate
         id: validate
@@ -55,10 +62,49 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve "create.plan" 
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+        
+  terraform_plan:
+    name: "Terraform_plan"
+    if: ${{ github.event.inputs.action == 'Terraform_plan' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.resource }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Save SSH key to file
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+       
+      - name: Terraform Show
+        id: show
+        run: terraform show -no-color create.plan > plan.txt
+       
+      - name: Upload Terraform Plan as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-plan
+          path: plan.txt
+  
 
   terraform_destroy:
     name: "Terraform_destroy"
@@ -74,13 +120,15 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Save SSH key to file
+        run: |
+          mkdir ~/.ssh
+          echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa.pub
+
       - name: Terraform Init
         id: init
         run: terraform init
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
       - name: Terraform Plan
         id: plan
@@ -89,8 +137,4 @@ jobs:
       - name: Terraform Destroy
         id: destroy
         working-directory: ${{ github.event.inputs.resource }}
-        run: terraform destroy -auto-approve "create.plan" 
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+        run: terraform destroy -auto-approve --var-file=../_env_config/dev.tfvars

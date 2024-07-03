@@ -13,7 +13,6 @@ terraform {
 
 }
 provider "aws" {
-  # profile = "default"
   region = var.region
 
   default_tags {
@@ -113,10 +112,6 @@ resource "aws_instance" "nginx-api_test_vm" {
 
 data "aws_route53_zone" "hosted_zone" {
   name = var.hosted_zone
-}
-
-output "hosted_zone_id" {
-  value = data.aws_route53_zone.hosted_zone.zone_id
 }
 
 resource "aws_route53_record" "a_record" {
