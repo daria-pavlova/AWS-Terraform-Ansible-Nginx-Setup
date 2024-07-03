@@ -65,7 +65,7 @@ jobs:
         
   terraform_plan:
     name: "Terraform_plan"
-    if: ${{ github.event.inputs.action == 'Terraform_apply' }}
+    if: ${{ github.event.inputs.action == 'Terraform_plan' }}
     runs-on: ubuntu-latest
     defaults:
       run:
