@@ -1,0 +1,93 @@
+name: "Terraform Apply/Destroy"
+
+on:
+  workflow_dispatch:
+    inputs:
+      # Working directory input from user.
+      resource:
+        type: choice
+        description: Choose the resource
+        options:
+        - ./terraform/dev/1_ec2
+        - ./terraform/dev/0_route53
+      # Terraform action you want to perform
+      action:
+        description: 'Terraform Action to Perform'
+        type: choice
+        options:
+        - Terraform_apply
+        - Terraform_destroy
+
+jobs:
+  terraform_apply:
+    name: "Terraform_apply"
+    if: ${{ github.event.inputs.action == 'Terraform_apply' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.resource }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+      
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve "create.plan" 
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
+  terraform_destroy:
+    name: "Terraform_destroy"
+    if: ${{ github.event.inputs.action == 'Terraform_destroy' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.event.inputs.resource }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -var-file=../_env_config/dev.tfvars -out create.plan
+    
+      - name: Terraform Destroy
+        id: destroy
+        working-directory: ${{ github.event.inputs.resource }}
+        run: terraform destroy -auto-approve "create.plan" 
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
