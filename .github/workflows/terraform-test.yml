@@ -97,7 +97,7 @@ jobs:
        
       - name: Terraform Show
         id: show
-        run: terraform show -no-color tfplan > plan.txt
+        run: terraform show -no-color create.plan > plan.txt
        
       - name: Upload Terraform Plan as Artifact
         uses: actions/upload-artifact@v2
