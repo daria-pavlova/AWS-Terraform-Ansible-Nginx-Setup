@@ -48,10 +48,6 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
       
       - name: Terraform Validate
         id: validate
@@ -64,10 +60,6 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve "create.plan" 
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
   terraform_destroy:
     name: "Terraform_destroy"
@@ -92,10 +84,6 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
       - name: Terraform Plan
         id: plan
@@ -104,8 +92,4 @@ jobs:
       - name: Terraform Destroy
         id: destroy
         working-directory: ${{ github.event.inputs.resource }}
-        run: terraform destroy -auto-approve
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+        run: terraform destroy -auto-approve --var-file=../_env_config/dev.tfvars
