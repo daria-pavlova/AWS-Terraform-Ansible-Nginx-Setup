@@ -104,7 +104,7 @@ jobs:
       - name: Terraform Destroy
         id: destroy
         working-directory: ${{ github.event.inputs.resource }}
-        run: terraform destroy -auto-approve "create.plan" 
+        run: terraform destroy -auto-approve
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
