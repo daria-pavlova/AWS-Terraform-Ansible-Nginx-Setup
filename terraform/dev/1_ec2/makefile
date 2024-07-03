@@ -4,7 +4,7 @@ default:
 	@echo "Please specify a target: init, plan, apply, validate, fmt, login"
 
 login:
-	@gcloud auth application-default login
+	@aws configureß
 
 init:
 	@terraform init

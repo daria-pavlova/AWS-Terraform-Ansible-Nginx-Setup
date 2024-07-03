@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~>5.55.0"
     }
   }
@@ -10,11 +10,11 @@ terraform {
     key    = "terraform/state/dev/nginx-ec2/1_ec2"
     region = "us-east-1"
   }
-  
+
 }
 provider "aws" {
   # profile = "default"
-  region  = var.region
+  region = var.region
 
   default_tags {
     tags = {

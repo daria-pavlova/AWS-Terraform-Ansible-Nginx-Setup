@@ -8,8 +8,6 @@ terraform.tfstate.backup
 *.plan
 *.log
 **.terraform.**
-**/node_modules/**
-**SCRAP**
 **terraform.tfstate.backup**
 **terraform.tfstate**
 **/terraform.tfstate.backup/**

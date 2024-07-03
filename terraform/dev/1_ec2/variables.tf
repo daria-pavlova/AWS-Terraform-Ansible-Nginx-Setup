@@ -42,11 +42,11 @@ variable "allow_ports" {
 # SSL on/off
 variable "userdata_vars" {
   default = {
-    enable_nginx_ssl  = true
-    domain_name       = "nginx-api.pp.ua"
+    enable_nginx_ssl = true
+    domain_name      = "nginx-api.pp.ua"
   }
   type = object({
-    enable_nginx_ssl  = bool
-    domain_name       = string
+    enable_nginx_ssl = bool
+    domain_name      = string
   })
 }
