@@ -29,7 +29,6 @@ env:
 jobs:
   terraform_apply:
     name: "Terraform_apply"
-    needs: terraform_plan
     if: ${{ github.event.inputs.action == 'Terraform_apply' }}
     runs-on: ubuntu-latest
     defaults:
@@ -110,7 +109,6 @@ jobs:
   terraform_destroy:
     name: "Terraform_destroy"
     if: ${{ github.event.inputs.action == 'Terraform_destroy' }}
-    needs: terraform_plan
     runs-on: ubuntu-latest
     defaults:
       run:
