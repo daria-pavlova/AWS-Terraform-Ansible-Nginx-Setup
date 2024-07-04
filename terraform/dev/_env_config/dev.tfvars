@@ -1,8 +1,5 @@
 PUBLIC_KEY_PATH = "~/.ssh/id_rsa.pub"
 
-# ACCESS_KEY = "  Your key  "
-# SECRET_KEY = "  Your key   "
-
 region            = "us-east-1"
 availability_zone = "us-east-1b"
 cidr_vpc          = "172.16.0.0/16"
