@@ -1,4 +1,4 @@
-# AWS Terraform Ansible Nginx Setup
+    # AWS Terraform Ansible Nginx Setup
 
 This repository contains the necessary files and instructions to set up an AWS infrastructure using Terraform, configure it with Ansible, and deploy an Nginx web server.
 
@@ -90,8 +90,12 @@ The repository is organized as follows:
 ```
 
 - The `ansible` directory contains the Ansible inventory file and playbook for configuring the instances.
+[![asciicast](https://asciinema.org/a/666741)](https://asciinema.org/a/666741)
 - The `terraform` directory contains the Terraform configuration files.
+[![asciicast](https://asciinema.org/a/666740)](https://asciinema.org/a/666740)
 - The `README.md` file provides instructions and information about the repository.
+
+
 
 ## [GitHub Actions](#github-actions)
 
