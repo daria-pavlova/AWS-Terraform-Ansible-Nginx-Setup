@@ -1,9 +1,21 @@
-#write a good visually and explanatory readme for this repo
 # AWS Terraform Ansible Nginx Setup
 
 This repository contains the necessary files and instructions to set up an AWS infrastructure using Terraform, configure it with Ansible, and deploy an Nginx web server.
 
-## Prerequisites
+## Content
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Directory Structure](#directory-structure)
+- [GitHub Actions](#github-actions)
+  - [Workflow Dispatch Inputs](#workflow-dispatch-inputs)
+  - [Environment Variables](#environment-variables)
+  - [Workflow Jobs](#workflow-jobs)
+  - [Workflow Diagram](#workflow-diagram)
+- [Contributing](#contributing)
+- [Points to Improve](#points-to-improve)
+
+## [Prerequisites](#prerequisites)
 
 Before you begin, make sure you have the following:
 
@@ -12,7 +24,7 @@ Before you begin, make sure you have the following:
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) ansible [core 2.14.1] or newer.
 
 
-## Getting Started
+## [Getting Started](#getting-started)
 
 To get started with this setup, follow these steps:
 
@@ -24,7 +36,7 @@ To get started with this setup, follow these steps:
 6. Once the infrastructure is created, run `00_install.sh` and `10_update_nginx_conf.sh` to configure the instances with Nginx.
 7. Access the Nginx web server by navigating to the public IP address of the created EC2 instance in your web browser.
 
-## Directory Structure
+## [Directory Structure](#directory-structure)
 
 The repository is organized as follows:
 
@@ -81,20 +93,20 @@ The repository is organized as follows:
 - The `terraform` directory contains the Terraform configuration files.
 - The `README.md` file provides instructions and information about the repository.
 
-## GitHub Actions
+## [GitHub Actions](#github-actions)
 
  Terraform Operations Workflow
 
 This document explains the GitHub Actions workflow defined in `terraform-ops.yml`. This workflow facilitates Terraform operations such as plan, apply, and destroy, based on user inputs during the workflow dispatch event.
 
-## Workflow Dispatch Inputs
+### [Workflow Dispatch Inputs](#workflow-dispatch-inputs)
 
 The workflow is triggered manually through GitHub's workflow dispatch event. It accepts two inputs from the user:
 
 1. **resource**: The Terraform resource directory to operate on.
 2. **action**: The Terraform action to perform (`Terraform_plan`, `Terraform_apply`, `Terraform_destroy`).
 
-## Environment Variables
+### [Environment Variables](#environment-variables)
 
 The workflow uses the following environment variables, which should be set in the repository's secrets:
 
@@ -103,7 +115,7 @@ The workflow uses the following environment variables, which should be set in th
 - `AWS_DEFAULT_REGION`
 - `TERRAFORM_SSH_KEY`
 
-## Workflow Jobs
+### [Workflow Jobs](#workflow-jobs)
 
 The workflow consists of three jobs:
 
@@ -111,7 +123,7 @@ The workflow consists of three jobs:
 2. **terraform_plan**: Executes `terraform plan` and uploads the plan as an artifact.
 3. **terraform_destroy**: Executes `terraform destroy` on the specified resource.
 
-## Workflow Diagram
+### [Workflow Diagram](#workflow-diagram)
 
 ```mermaid
 graph TD;
@@ -139,7 +151,7 @@ graph TD;
     T --> W[Upload Terraform Plan];
 ```
 
-## Contributing
+## [Contributing](#contributing)
 
 If you would like to contribute to this project, please follow these guidelines:
 
@@ -148,3 +160,12 @@ If you would like to contribute to this project, please follow these guidelines:
 3. Make your changes and commit them.
 4. Push your changes to your forked repository.
 5. Submit a pull request to the main repository.
+
+
+## [Points to Improve](#points-to-improve)
+
+Since GitHub actions were only added for personal conviniency there are a few points for future imrpovement.
+
+1. Submit plan as comment in PR.
+2. Use plan artifact to the corresponding resource.
+3. Run apply and destroy only on master branch and after PR was merged.
