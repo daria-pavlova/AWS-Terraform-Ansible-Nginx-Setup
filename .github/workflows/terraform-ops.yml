@@ -47,6 +47,13 @@ jobs:
           echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa.pub
 
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
+
       - name: Terraform Init
         id: init
         run: terraform init
@@ -82,6 +89,13 @@ jobs:
           mkdir ~/.ssh
           echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa.pub
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
       - name: Terraform Init
         id: init
@@ -125,6 +139,13 @@ jobs:
           mkdir ~/.ssh
           echo "${{ secrets.TERRAFORM_SSH_KEY }}" > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa.pub
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.TERRAFORM_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.TERRAFORM_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.TERRAFORM_AWS_DEFAULT_REGION }}
 
       - name: Terraform Init
         id: init
