@@ -110,17 +110,17 @@ resource "aws_instance" "nginx-api_test_vm" {
   }
 }
 
-data "aws_route53_zone" "hosted_zone" {
-  name = var.hosted_zone
-}
+# data "aws_route53_zone" "hosted_zone" {
+#   name = var.hosted_zone
+# }
 
-resource "aws_route53_record" "a_record" {
-  zone_id = data.aws_route53_zone.hosted_zone.zone_id
-  name    = var.hosted_zone
-  type    = "A"
-  ttl     = "300"
-  records = aws_instance.nginx-api_test_vm.*.public_ip
-}
+# resource "aws_route53_record" "a_record" {
+#   zone_id = data.aws_route53_zone.hosted_zone.zone_id
+#   name    = var.hosted_zone
+#   type    = "A"
+#   ttl     = "300"
+#   records = aws_instance.nginx-api_test_vm.*.public_ip
+# }
 
 resource "aws_iam_user" "nginx-api_user" {
   name          = var.user

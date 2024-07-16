@@ -1,3 +1,7 @@
+#!/bin/sh
+
+set -eu
+
 if [[ "${DEBUG:-false}" = true ]]; then
     set -x
 fi

@@ -19,9 +19,9 @@ output "password" {
   value = aws_iam_user_login_profile.nginx-api_user.password
 }
 
-output "hosted_zone_id" {
-  value = data.aws_route53_zone.hosted_zone.zone_id
-}
+# output "hosted_zone_id" {
+#   value = data.aws_route53_zone.hosted_zone.zone_id
+# }
 
 # Access key
 # output "secret_access_key" {

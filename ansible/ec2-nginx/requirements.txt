@@ -1,0 +1,5 @@
+pyyaml 
+jinja2 
+packaging 
+boto3 
+jupyter

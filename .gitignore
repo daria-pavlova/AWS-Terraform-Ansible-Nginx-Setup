@@ -12,3 +12,14 @@ terraform.tfstate.backup
 **terraform.tfstate**
 **/terraform.tfstate.backup/**
 **/terraform.tfstate/**
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+**venv/**
+
+ENV/
+env.bak/
+venv.bak/
